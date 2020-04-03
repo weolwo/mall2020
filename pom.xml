@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.poplar.mall2020</groupId>
+    <groupId>com.poplar</groupId>
     <artifactId>mall2020</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
@@ -16,6 +16,9 @@
         <module>mall-member</module>
         <module>mall-order</module>
         <module>mall-product</module>
+        <module>renren-fast</module>
+        <module>renren-generator</module>
+        <module>mall-common</module>
     </modules>
     <!-- 统一管理jar包版本 -->
     <properties>

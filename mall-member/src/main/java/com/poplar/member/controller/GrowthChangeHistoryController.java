@@ -1,16 +1,20 @@
 package com.poplar.member.controller;
 
-import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
-import com.poplar.member.domain.GrowthChangeHistory;
-import com.poplar.member.service.GrowthChangeHistoryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.poplar.member.domain.GrowthChangeHistory;
+import com.poplar.member.service.GrowthChangeHistoryService;
+import com.poplar.common.utils.PageUtils;
+import com.poplar.common.utils.Result;
 
 
 
@@ -19,7 +23,7 @@ import java.util.Map;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:22
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/growthchangehistory")
@@ -32,10 +36,10 @@ public class GrowthChangeHistoryController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:growthchangehistory:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = growthChangeHistoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -44,10 +48,10 @@ public class GrowthChangeHistoryController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:growthchangehistory:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<GrowthChangeHistory> info(@PathVariable("id") Long id){
 		GrowthChangeHistory growthChangeHistory = growthChangeHistoryService.getById(id);
 
-        return R.ok().put("growthChangeHistory", growthChangeHistory);
+        return Result.success(growthChangeHistory);
     }
 
     /**
@@ -55,10 +59,9 @@ public class GrowthChangeHistoryController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:growthchangehistory:save")
-    public R save(@RequestBody GrowthChangeHistory growthChangeHistory){
-		growthChangeHistoryService.save(growthChangeHistory);
+    public Result<Boolean> save(@RequestBody GrowthChangeHistory growthChangeHistory){
 
-        return R.ok();
+        return Result.success(growthChangeHistoryService.save(growthChangeHistory));
     }
 
     /**
@@ -66,10 +69,9 @@ public class GrowthChangeHistoryController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:growthchangehistory:update")
-    public R update(@RequestBody GrowthChangeHistory growthChangeHistory){
-		growthChangeHistoryService.updateById(growthChangeHistory);
+    public Result<Boolean> update(@RequestBody GrowthChangeHistory growthChangeHistory){
 
-        return R.ok();
+        return Result.success(growthChangeHistoryService.updateById(growthChangeHistory));
     }
 
     /**
@@ -77,10 +79,9 @@ public class GrowthChangeHistoryController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:growthchangehistory:delete")
-    public R delete(@RequestBody Long[] ids){
-		growthChangeHistoryService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(growthChangeHistoryService.removeByIds(Arrays.asList(ids)));
     }
 
 }

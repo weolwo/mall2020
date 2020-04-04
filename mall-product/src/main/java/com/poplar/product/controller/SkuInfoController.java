@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.SkuInfo;
 import com.poplar.product.service.SkuInfoService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:11
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/skuinfo")
@@ -36,10 +36,10 @@ public class SkuInfoController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:skuinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = skuInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SkuInfoController {
      */
     @RequestMapping("/info/{skuId}")
     //@RequiresPermissions("product:skuinfo:info")
-    public R info(@PathVariable("skuId") Long skuId){
+    public Result<SkuInfo> info(@PathVariable("skuId") Long skuId){
 		SkuInfo skuInfo = skuInfoService.getById(skuId);
 
-        return R.ok().put("skuInfo", skuInfo);
+        return Result.success(skuInfo);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SkuInfoController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:skuinfo:save")
-    public R save(@RequestBody SkuInfo skuInfo){
-		skuInfoService.save(skuInfo);
+    public Result<Boolean> save(@RequestBody SkuInfo skuInfo){
 
-        return R.ok();
+        return Result.success(skuInfoService.save(skuInfo));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SkuInfoController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:skuinfo:update")
-    public R update(@RequestBody SkuInfo skuInfo){
-		skuInfoService.updateById(skuInfo);
+    public Result<Boolean> update(@RequestBody SkuInfo skuInfo){
 
-        return R.ok();
+        return Result.success(skuInfoService.updateById(skuInfo));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SkuInfoController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:skuinfo:delete")
-    public R delete(@RequestBody Long[] skuIds){
-		skuInfoService.removeByIds(Arrays.asList(skuIds));
+    public Result<Boolean> delete(@RequestBody Long[] skuIds){
 
-        return R.ok();
+        return Result.success(skuInfoService.removeByIds(Arrays.asList(skuIds)));
     }
 
 }

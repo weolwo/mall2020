@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.Brand;
 import com.poplar.product.service.BrandService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:11
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/brand")
@@ -36,10 +36,10 @@ public class BrandController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:brand:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = brandService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class BrandController {
      */
     @RequestMapping("/info/{brandId}")
     //@RequiresPermissions("product:brand:info")
-    public R info(@PathVariable("brandId") Long brandId){
+    public Result<Brand> info(@PathVariable("brandId") Long brandId){
 		Brand brand = brandService.getById(brandId);
 
-        return R.ok().put("brand", brand);
+        return Result.success(brand);
     }
 
     /**
@@ -59,10 +59,9 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody Brand brand){
-		brandService.save(brand);
+    public Result<Boolean> save(@RequestBody Brand brand){
 
-        return R.ok();
+        return Result.success(brandService.save(brand));
     }
 
     /**
@@ -70,10 +69,9 @@ public class BrandController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:brand:update")
-    public R update(@RequestBody Brand brand){
-		brandService.updateById(brand);
+    public Result<Boolean> update(@RequestBody Brand brand){
 
-        return R.ok();
+        return Result.success(brandService.updateById(brand));
     }
 
     /**
@@ -81,10 +79,9 @@ public class BrandController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:brand:delete")
-    public R delete(@RequestBody Long[] brandIds){
-		brandService.removeByIds(Arrays.asList(brandIds));
+    public Result<Boolean> delete(@RequestBody Long[] brandIds){
 
-        return R.ok();
+        return Result.success(brandService.removeByIds(Arrays.asList(brandIds)));
     }
 
 }

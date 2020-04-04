@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.HomeAdv;
 import com.poplar.coupon.service.HomeAdvService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/homeadv")
@@ -36,10 +36,10 @@ public class HomeAdvController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:homeadv:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = homeAdvService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class HomeAdvController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:homeadv:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<HomeAdv> info(@PathVariable("id") Long id){
 		HomeAdv homeAdv = homeAdvService.getById(id);
 
-        return R.ok().put("homeAdv", homeAdv);
+        return Result.success(homeAdv);
     }
 
     /**
@@ -59,10 +59,9 @@ public class HomeAdvController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:homeadv:save")
-    public R save(@RequestBody HomeAdv homeAdv){
-		homeAdvService.save(homeAdv);
+    public Result<Boolean> save(@RequestBody HomeAdv homeAdv){
 
-        return R.ok();
+        return Result.success(homeAdvService.save(homeAdv));
     }
 
     /**
@@ -70,10 +69,9 @@ public class HomeAdvController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:homeadv:update")
-    public R update(@RequestBody HomeAdv homeAdv){
-		homeAdvService.updateById(homeAdv);
+    public Result<Boolean> update(@RequestBody HomeAdv homeAdv){
 
-        return R.ok();
+        return Result.success(homeAdvService.updateById(homeAdv));
     }
 
     /**
@@ -81,10 +79,9 @@ public class HomeAdvController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:homeadv:delete")
-    public R delete(@RequestBody Long[] ids){
-		homeAdvService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(homeAdvService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.Category;
 import com.poplar.product.service.CategoryService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:11
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/category")
@@ -36,10 +36,10 @@ public class CategoryController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:category:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = categoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class CategoryController {
      */
     @RequestMapping("/info/{catId}")
     //@RequiresPermissions("product:category:info")
-    public R info(@PathVariable("catId") Long catId){
+    public Result<Category> info(@PathVariable("catId") Long catId){
 		Category category = categoryService.getById(catId);
 
-        return R.ok().put("category", category);
+        return Result.success(category);
     }
 
     /**
@@ -59,10 +59,9 @@ public class CategoryController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:category:save")
-    public R save(@RequestBody Category category){
-		categoryService.save(category);
+    public Result<Boolean> save(@RequestBody Category category){
 
-        return R.ok();
+        return Result.success(categoryService.save(category));
     }
 
     /**
@@ -70,10 +69,9 @@ public class CategoryController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:category:update")
-    public R update(@RequestBody Category category){
-		categoryService.updateById(category);
+    public Result<Boolean> update(@RequestBody Category category){
 
-        return R.ok();
+        return Result.success(categoryService.updateById(category));
     }
 
     /**
@@ -81,10 +79,9 @@ public class CategoryController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:category:delete")
-    public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
+    public Result<Boolean> delete(@RequestBody Long[] catIds){
 
-        return R.ok();
+        return Result.success(categoryService.removeByIds(Arrays.asList(catIds)));
     }
 
 }

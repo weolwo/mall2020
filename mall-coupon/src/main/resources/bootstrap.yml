@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: mall-coupon
+  cloud:
+    nacos:
+      config:
+        group: dev
+        namespace: mall-coupon
+        file-extension: yml
+        server-addr: localhost:8848

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.HomeSubjectSpu;
 import com.poplar.coupon.service.HomeSubjectSpuService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/homesubjectspu")
@@ -36,10 +36,10 @@ public class HomeSubjectSpuController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:homesubjectspu:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = homeSubjectSpuService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class HomeSubjectSpuController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:homesubjectspu:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<HomeSubjectSpu> info(@PathVariable("id") Long id){
 		HomeSubjectSpu homeSubjectSpu = homeSubjectSpuService.getById(id);
 
-        return R.ok().put("homeSubjectSpu", homeSubjectSpu);
+        return Result.success(homeSubjectSpu);
     }
 
     /**
@@ -59,10 +59,9 @@ public class HomeSubjectSpuController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:homesubjectspu:save")
-    public R save(@RequestBody HomeSubjectSpu homeSubjectSpu){
-		homeSubjectSpuService.save(homeSubjectSpu);
+    public Result<Boolean> save(@RequestBody HomeSubjectSpu homeSubjectSpu){
 
-        return R.ok();
+        return Result.success(homeSubjectSpuService.save(homeSubjectSpu));
     }
 
     /**
@@ -70,10 +69,9 @@ public class HomeSubjectSpuController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:homesubjectspu:update")
-    public R update(@RequestBody HomeSubjectSpu homeSubjectSpu){
-		homeSubjectSpuService.updateById(homeSubjectSpu);
+    public Result<Boolean> update(@RequestBody HomeSubjectSpu homeSubjectSpu){
 
-        return R.ok();
+        return Result.success(homeSubjectSpuService.updateById(homeSubjectSpu));
     }
 
     /**
@@ -81,10 +79,9 @@ public class HomeSubjectSpuController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:homesubjectspu:delete")
-    public R delete(@RequestBody Long[] ids){
-		homeSubjectSpuService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(homeSubjectSpuService.removeByIds(Arrays.asList(ids)));
     }
 
 }

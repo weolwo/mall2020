@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.CategoryBrandRelation;
 import com.poplar.product.service.CategoryBrandRelationService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:10
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/categorybrandrelation")
@@ -36,10 +36,10 @@ public class CategoryBrandRelationController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:categorybrandrelation:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = categoryBrandRelationService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class CategoryBrandRelationController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:categorybrandrelation:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<CategoryBrandRelation> info(@PathVariable("id") Long id){
 		CategoryBrandRelation categoryBrandRelation = categoryBrandRelationService.getById(id);
 
-        return R.ok().put("categoryBrandRelation", categoryBrandRelation);
+        return Result.success(categoryBrandRelation);
     }
 
     /**
@@ -59,10 +59,9 @@ public class CategoryBrandRelationController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:categorybrandrelation:save")
-    public R save(@RequestBody CategoryBrandRelation categoryBrandRelation){
-		categoryBrandRelationService.save(categoryBrandRelation);
+    public Result<Boolean> save(@RequestBody CategoryBrandRelation categoryBrandRelation){
 
-        return R.ok();
+        return Result.success(categoryBrandRelationService.save(categoryBrandRelation));
     }
 
     /**
@@ -70,10 +69,9 @@ public class CategoryBrandRelationController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:categorybrandrelation:update")
-    public R update(@RequestBody CategoryBrandRelation categoryBrandRelation){
-		categoryBrandRelationService.updateById(categoryBrandRelation);
+    public Result<Boolean> update(@RequestBody CategoryBrandRelation categoryBrandRelation){
 
-        return R.ok();
+        return Result.success(categoryBrandRelationService.updateById(categoryBrandRelation));
     }
 
     /**
@@ -81,10 +79,9 @@ public class CategoryBrandRelationController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:categorybrandrelation:delete")
-    public R delete(@RequestBody Long[] ids){
-		categoryBrandRelationService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(categoryBrandRelationService.removeByIds(Arrays.asList(ids)));
     }
 
 }

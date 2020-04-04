@@ -1,16 +1,20 @@
 package com.poplar.coupon.controller;
 
-import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
-import com.poplar.coupon.domain.CouponSpuCategoryRelation;
-import com.poplar.coupon.service.CouponSpuCategoryRelationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.poplar.coupon.domain.CouponSpuCategoryRelation;
+import com.poplar.coupon.service.CouponSpuCategoryRelationService;
+import com.poplar.common.utils.PageUtils;
+import com.poplar.common.utils.Result;
 
 
 
@@ -19,7 +23,7 @@ import java.util.Map;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/couponspucategoryrelation")
@@ -32,10 +36,10 @@ public class CouponSpuCategoryRelationController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:couponspucategoryrelation:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = couponSpuCategoryRelationService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -44,10 +48,10 @@ public class CouponSpuCategoryRelationController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:couponspucategoryrelation:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<CouponSpuCategoryRelation> info(@PathVariable("id") Long id){
 		CouponSpuCategoryRelation couponSpuCategoryRelation = couponSpuCategoryRelationService.getById(id);
 
-        return R.ok().put("couponSpuCategoryRelation", couponSpuCategoryRelation);
+        return Result.success(couponSpuCategoryRelation);
     }
 
     /**
@@ -55,10 +59,9 @@ public class CouponSpuCategoryRelationController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:couponspucategoryrelation:save")
-    public R save(@RequestBody CouponSpuCategoryRelation couponSpuCategoryRelation){
-		couponSpuCategoryRelationService.save(couponSpuCategoryRelation);
+    public Result<Boolean> save(@RequestBody CouponSpuCategoryRelation couponSpuCategoryRelation){
 
-        return R.ok();
+        return Result.success(couponSpuCategoryRelationService.save(couponSpuCategoryRelation));
     }
 
     /**
@@ -66,10 +69,9 @@ public class CouponSpuCategoryRelationController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:couponspucategoryrelation:update")
-    public R update(@RequestBody CouponSpuCategoryRelation couponSpuCategoryRelation){
-		couponSpuCategoryRelationService.updateById(couponSpuCategoryRelation);
+    public Result<Boolean> update(@RequestBody CouponSpuCategoryRelation couponSpuCategoryRelation){
 
-        return R.ok();
+        return Result.success(couponSpuCategoryRelationService.updateById(couponSpuCategoryRelation));
     }
 
     /**
@@ -77,10 +79,9 @@ public class CouponSpuCategoryRelationController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:couponspucategoryrelation:delete")
-    public R delete(@RequestBody Long[] ids){
-		couponSpuCategoryRelationService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(couponSpuCategoryRelationService.removeByIds(Arrays.asList(ids)));
     }
 
 }

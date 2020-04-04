@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.SeckillSkuRelation;
 import com.poplar.coupon.service.SeckillSkuRelationService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/seckillskurelation")
@@ -36,10 +36,10 @@ public class SeckillSkuRelationController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:seckillskurelation:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = seckillSkuRelationService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SeckillSkuRelationController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:seckillskurelation:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SeckillSkuRelation> info(@PathVariable("id") Long id){
 		SeckillSkuRelation seckillSkuRelation = seckillSkuRelationService.getById(id);
 
-        return R.ok().put("seckillSkuRelation", seckillSkuRelation);
+        return Result.success(seckillSkuRelation);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SeckillSkuRelationController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:seckillskurelation:save")
-    public R save(@RequestBody SeckillSkuRelation seckillSkuRelation){
-		seckillSkuRelationService.save(seckillSkuRelation);
+    public Result<Boolean> save(@RequestBody SeckillSkuRelation seckillSkuRelation){
 
-        return R.ok();
+        return Result.success(seckillSkuRelationService.save(seckillSkuRelation));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SeckillSkuRelationController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:seckillskurelation:update")
-    public R update(@RequestBody SeckillSkuRelation seckillSkuRelation){
-		seckillSkuRelationService.updateById(seckillSkuRelation);
+    public Result<Boolean> update(@RequestBody SeckillSkuRelation seckillSkuRelation){
 
-        return R.ok();
+        return Result.success(seckillSkuRelationService.updateById(seckillSkuRelation));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SeckillSkuRelationController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:seckillskurelation:delete")
-    public R delete(@RequestBody Long[] ids){
-		seckillSkuRelationService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(seckillSkuRelationService.removeByIds(Arrays.asList(ids)));
     }
 
 }

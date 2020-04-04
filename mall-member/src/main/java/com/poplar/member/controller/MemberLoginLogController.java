@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.member.domain.MemberLoginLog;
 import com.poplar.member.service.MemberLoginLogService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:22
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/memberloginlog")
@@ -36,10 +36,10 @@ public class MemberLoginLogController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:memberloginlog:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = memberLoginLogService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class MemberLoginLogController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:memberloginlog:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<MemberLoginLog> info(@PathVariable("id") Long id){
 		MemberLoginLog memberLoginLog = memberLoginLogService.getById(id);
 
-        return R.ok().put("memberLoginLog", memberLoginLog);
+        return Result.success(memberLoginLog);
     }
 
     /**
@@ -59,10 +59,9 @@ public class MemberLoginLogController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:memberloginlog:save")
-    public R save(@RequestBody MemberLoginLog memberLoginLog){
-		memberLoginLogService.save(memberLoginLog);
+    public Result<Boolean> save(@RequestBody MemberLoginLog memberLoginLog){
 
-        return R.ok();
+        return Result.success(memberLoginLogService.save(memberLoginLog));
     }
 
     /**
@@ -70,10 +69,9 @@ public class MemberLoginLogController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:memberloginlog:update")
-    public R update(@RequestBody MemberLoginLog memberLoginLog){
-		memberLoginLogService.updateById(memberLoginLog);
+    public Result<Boolean> update(@RequestBody MemberLoginLog memberLoginLog){
 
-        return R.ok();
+        return Result.success(memberLoginLogService.updateById(memberLoginLog));
     }
 
     /**
@@ -81,10 +79,9 @@ public class MemberLoginLogController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:memberloginlog:delete")
-    public R delete(@RequestBody Long[] ids){
-		memberLoginLogService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(memberLoginLogService.removeByIds(Arrays.asList(ids)));
     }
 
 }

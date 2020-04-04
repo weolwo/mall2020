@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.ware.domain.WareOrderTaskDetail;
 import com.poplar.ware.service.WareOrderTaskDetailService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:22:22
+ * @date 2020-04-03 20:53:53
  */
 @RestController
 @RequestMapping("ware/wareordertaskdetail")
@@ -36,10 +36,10 @@ public class WareOrderTaskDetailController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("ware:wareordertaskdetail:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = wareOrderTaskDetailService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class WareOrderTaskDetailController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("ware:wareordertaskdetail:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<WareOrderTaskDetail> info(@PathVariable("id") Long id){
 		WareOrderTaskDetail wareOrderTaskDetail = wareOrderTaskDetailService.getById(id);
 
-        return R.ok().put("wareOrderTaskDetail", wareOrderTaskDetail);
+        return Result.success(wareOrderTaskDetail);
     }
 
     /**
@@ -59,10 +59,9 @@ public class WareOrderTaskDetailController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("ware:wareordertaskdetail:save")
-    public R save(@RequestBody WareOrderTaskDetail wareOrderTaskDetail){
-		wareOrderTaskDetailService.save(wareOrderTaskDetail);
+    public Result<Boolean> save(@RequestBody WareOrderTaskDetail wareOrderTaskDetail){
 
-        return R.ok();
+        return Result.success(wareOrderTaskDetailService.save(wareOrderTaskDetail));
     }
 
     /**
@@ -70,10 +69,9 @@ public class WareOrderTaskDetailController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("ware:wareordertaskdetail:update")
-    public R update(@RequestBody WareOrderTaskDetail wareOrderTaskDetail){
-		wareOrderTaskDetailService.updateById(wareOrderTaskDetail);
+    public Result<Boolean> update(@RequestBody WareOrderTaskDetail wareOrderTaskDetail){
 
-        return R.ok();
+        return Result.success(wareOrderTaskDetailService.updateById(wareOrderTaskDetail));
     }
 
     /**
@@ -81,10 +79,9 @@ public class WareOrderTaskDetailController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("ware:wareordertaskdetail:delete")
-    public R delete(@RequestBody Long[] ids){
-		wareOrderTaskDetailService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(wareOrderTaskDetailService.removeByIds(Arrays.asList(ids)));
     }
 
 }

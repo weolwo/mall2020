@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.order.domain.PaymentInfo;
 import com.poplar.order.service.PaymentInfoService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:29:39
+ * @date 2020-04-03 20:45:56
  */
 @RestController
 @RequestMapping("order/paymentinfo")
@@ -36,10 +36,10 @@ public class PaymentInfoController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("order:paymentinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = paymentInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class PaymentInfoController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("order:paymentinfo:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<PaymentInfo> info(@PathVariable("id") Long id){
 		PaymentInfo paymentInfo = paymentInfoService.getById(id);
 
-        return R.ok().put("paymentInfo", paymentInfo);
+        return Result.success(paymentInfo);
     }
 
     /**
@@ -59,10 +59,9 @@ public class PaymentInfoController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("order:paymentinfo:save")
-    public R save(@RequestBody PaymentInfo paymentInfo){
-		paymentInfoService.save(paymentInfo);
+    public Result<Boolean> save(@RequestBody PaymentInfo paymentInfo){
 
-        return R.ok();
+        return Result.success(paymentInfoService.save(paymentInfo));
     }
 
     /**
@@ -70,10 +69,9 @@ public class PaymentInfoController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("order:paymentinfo:update")
-    public R update(@RequestBody PaymentInfo paymentInfo){
-		paymentInfoService.updateById(paymentInfo);
+    public Result<Boolean> update(@RequestBody PaymentInfo paymentInfo){
 
-        return R.ok();
+        return Result.success(paymentInfoService.updateById(paymentInfo));
     }
 
     /**
@@ -81,10 +79,9 @@ public class PaymentInfoController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("order:paymentinfo:delete")
-    public R delete(@RequestBody Long[] ids){
-		paymentInfoService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(paymentInfoService.removeByIds(Arrays.asList(ids)));
     }
 
 }

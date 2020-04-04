@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.SkuImages;
 import com.poplar.product.service.SkuImagesService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:10
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/skuimages")
@@ -36,10 +36,10 @@ public class SkuImagesController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:skuimages:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = skuImagesService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SkuImagesController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:skuimages:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SkuImages> info(@PathVariable("id") Long id){
 		SkuImages skuImages = skuImagesService.getById(id);
 
-        return R.ok().put("skuImages", skuImages);
+        return Result.success(skuImages);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SkuImagesController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:skuimages:save")
-    public R save(@RequestBody SkuImages skuImages){
-		skuImagesService.save(skuImages);
+    public Result<Boolean> save(@RequestBody SkuImages skuImages){
 
-        return R.ok();
+        return Result.success(skuImagesService.save(skuImages));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SkuImagesController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:skuimages:update")
-    public R update(@RequestBody SkuImages skuImages){
-		skuImagesService.updateById(skuImages);
+    public Result<Boolean> update(@RequestBody SkuImages skuImages){
 
-        return R.ok();
+        return Result.success(skuImagesService.updateById(skuImages));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SkuImagesController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:skuimages:delete")
-    public R delete(@RequestBody Long[] ids){
-		skuImagesService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(skuImagesService.removeByIds(Arrays.asList(ids)));
     }
 
 }

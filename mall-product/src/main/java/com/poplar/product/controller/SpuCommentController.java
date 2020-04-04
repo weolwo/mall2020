@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.SpuComment;
 import com.poplar.product.service.SpuCommentService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:11
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/spucomment")
@@ -36,10 +36,10 @@ public class SpuCommentController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:spucomment:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = spuCommentService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SpuCommentController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:spucomment:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SpuComment> info(@PathVariable("id") Long id){
 		SpuComment spuComment = spuCommentService.getById(id);
 
-        return R.ok().put("spuComment", spuComment);
+        return Result.success(spuComment);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SpuCommentController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:spucomment:save")
-    public R save(@RequestBody SpuComment spuComment){
-		spuCommentService.save(spuComment);
+    public Result<Boolean> save(@RequestBody SpuComment spuComment){
 
-        return R.ok();
+        return Result.success(spuCommentService.save(spuComment));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SpuCommentController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:spucomment:update")
-    public R update(@RequestBody SpuComment spuComment){
-		spuCommentService.updateById(spuComment);
+    public Result<Boolean> update(@RequestBody SpuComment spuComment){
 
-        return R.ok();
+        return Result.success(spuCommentService.updateById(spuComment));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SpuCommentController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:spucomment:delete")
-    public R delete(@RequestBody Long[] ids){
-		spuCommentService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(spuCommentService.removeByIds(Arrays.asList(ids)));
     }
 
 }

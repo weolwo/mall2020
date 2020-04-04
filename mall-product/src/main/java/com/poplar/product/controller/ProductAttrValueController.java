@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.ProductAttrValue;
 import com.poplar.product.service.ProductAttrValueService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:10
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/productattrvalue")
@@ -36,10 +36,10 @@ public class ProductAttrValueController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:productattrvalue:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = productAttrValueService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class ProductAttrValueController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:productattrvalue:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<ProductAttrValue> info(@PathVariable("id") Long id){
 		ProductAttrValue productAttrValue = productAttrValueService.getById(id);
 
-        return R.ok().put("productAttrValue", productAttrValue);
+        return Result.success(productAttrValue);
     }
 
     /**
@@ -59,10 +59,9 @@ public class ProductAttrValueController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:productattrvalue:save")
-    public R save(@RequestBody ProductAttrValue productAttrValue){
-		productAttrValueService.save(productAttrValue);
+    public Result<Boolean> save(@RequestBody ProductAttrValue productAttrValue){
 
-        return R.ok();
+        return Result.success(productAttrValueService.save(productAttrValue));
     }
 
     /**
@@ -70,10 +69,9 @@ public class ProductAttrValueController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:productattrvalue:update")
-    public R update(@RequestBody ProductAttrValue productAttrValue){
-		productAttrValueService.updateById(productAttrValue);
+    public Result<Boolean> update(@RequestBody ProductAttrValue productAttrValue){
 
-        return R.ok();
+        return Result.success(productAttrValueService.updateById(productAttrValue));
     }
 
     /**
@@ -81,10 +79,9 @@ public class ProductAttrValueController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:productattrvalue:delete")
-    public R delete(@RequestBody Long[] ids){
-		productAttrValueService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(productAttrValueService.removeByIds(Arrays.asList(ids)));
     }
 
 }

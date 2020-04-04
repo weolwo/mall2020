@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.CommentReplay;
 import com.poplar.product.service.CommentReplayService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:10
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/commentreplay")
@@ -36,10 +36,10 @@ public class CommentReplayController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:commentreplay:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = commentReplayService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class CommentReplayController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:commentreplay:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<CommentReplay> info(@PathVariable("id") Long id){
 		CommentReplay commentReplay = commentReplayService.getById(id);
 
-        return R.ok().put("commentReplay", commentReplay);
+        return Result.success(commentReplay);
     }
 
     /**
@@ -59,10 +59,9 @@ public class CommentReplayController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:commentreplay:save")
-    public R save(@RequestBody CommentReplay commentReplay){
-		commentReplayService.save(commentReplay);
+    public Result<Boolean> save(@RequestBody CommentReplay commentReplay){
 
-        return R.ok();
+        return Result.success(commentReplayService.save(commentReplay));
     }
 
     /**
@@ -70,10 +69,9 @@ public class CommentReplayController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:commentreplay:update")
-    public R update(@RequestBody CommentReplay commentReplay){
-		commentReplayService.updateById(commentReplay);
+    public Result<Boolean> update(@RequestBody CommentReplay commentReplay){
 
-        return R.ok();
+        return Result.success(commentReplayService.updateById(commentReplay));
     }
 
     /**
@@ -81,10 +79,9 @@ public class CommentReplayController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:commentreplay:delete")
-    public R delete(@RequestBody Long[] ids){
-		commentReplayService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(commentReplayService.removeByIds(Arrays.asList(ids)));
     }
 
 }

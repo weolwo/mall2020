@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.member.domain.MemberReceiveAddress;
 import com.poplar.member.service.MemberReceiveAddressService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:22
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/memberreceiveaddress")
@@ -36,10 +36,10 @@ public class MemberReceiveAddressController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:memberreceiveaddress:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = memberReceiveAddressService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class MemberReceiveAddressController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:memberreceiveaddress:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<MemberReceiveAddress> info(@PathVariable("id") Long id){
 		MemberReceiveAddress memberReceiveAddress = memberReceiveAddressService.getById(id);
 
-        return R.ok().put("memberReceiveAddress", memberReceiveAddress);
+        return Result.success(memberReceiveAddress);
     }
 
     /**
@@ -59,10 +59,9 @@ public class MemberReceiveAddressController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:memberreceiveaddress:save")
-    public R save(@RequestBody MemberReceiveAddress memberReceiveAddress){
-		memberReceiveAddressService.save(memberReceiveAddress);
+    public Result<Boolean> save(@RequestBody MemberReceiveAddress memberReceiveAddress){
 
-        return R.ok();
+        return Result.success(memberReceiveAddressService.save(memberReceiveAddress));
     }
 
     /**
@@ -70,10 +69,9 @@ public class MemberReceiveAddressController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:memberreceiveaddress:update")
-    public R update(@RequestBody MemberReceiveAddress memberReceiveAddress){
-		memberReceiveAddressService.updateById(memberReceiveAddress);
+    public Result<Boolean> update(@RequestBody MemberReceiveAddress memberReceiveAddress){
 
-        return R.ok();
+        return Result.success(memberReceiveAddressService.updateById(memberReceiveAddress));
     }
 
     /**
@@ -81,10 +79,9 @@ public class MemberReceiveAddressController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:memberreceiveaddress:delete")
-    public R delete(@RequestBody Long[] ids){
-		memberReceiveAddressService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(memberReceiveAddressService.removeByIds(Arrays.asList(ids)));
     }
 
 }

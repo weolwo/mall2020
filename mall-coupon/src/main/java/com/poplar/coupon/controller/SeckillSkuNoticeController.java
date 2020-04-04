@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.SeckillSkuNotice;
 import com.poplar.coupon.service.SeckillSkuNoticeService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/seckillskunotice")
@@ -36,10 +36,10 @@ public class SeckillSkuNoticeController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:seckillskunotice:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = seckillSkuNoticeService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SeckillSkuNoticeController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:seckillskunotice:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SeckillSkuNotice> info(@PathVariable("id") Long id){
 		SeckillSkuNotice seckillSkuNotice = seckillSkuNoticeService.getById(id);
 
-        return R.ok().put("seckillSkuNotice", seckillSkuNotice);
+        return Result.success(seckillSkuNotice);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SeckillSkuNoticeController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:seckillskunotice:save")
-    public R save(@RequestBody SeckillSkuNotice seckillSkuNotice){
-		seckillSkuNoticeService.save(seckillSkuNotice);
+    public Result<Boolean> save(@RequestBody SeckillSkuNotice seckillSkuNotice){
 
-        return R.ok();
+        return Result.success(seckillSkuNoticeService.save(seckillSkuNotice));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SeckillSkuNoticeController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:seckillskunotice:update")
-    public R update(@RequestBody SeckillSkuNotice seckillSkuNotice){
-		seckillSkuNoticeService.updateById(seckillSkuNotice);
+    public Result<Boolean> update(@RequestBody SeckillSkuNotice seckillSkuNotice){
 
-        return R.ok();
+        return Result.success(seckillSkuNoticeService.updateById(seckillSkuNotice));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SeckillSkuNoticeController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:seckillskunotice:delete")
-    public R delete(@RequestBody Long[] ids){
-		seckillSkuNoticeService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(seckillSkuNoticeService.removeByIds(Arrays.asList(ids)));
     }
 
 }

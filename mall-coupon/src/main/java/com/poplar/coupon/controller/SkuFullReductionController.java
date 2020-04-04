@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.SkuFullReduction;
 import com.poplar.coupon.service.SkuFullReductionService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/skufullreduction")
@@ -36,10 +36,10 @@ public class SkuFullReductionController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:skufullreduction:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = skuFullReductionService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SkuFullReductionController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:skufullreduction:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SkuFullReduction> info(@PathVariable("id") Long id){
 		SkuFullReduction skuFullReduction = skuFullReductionService.getById(id);
 
-        return R.ok().put("skuFullReduction", skuFullReduction);
+        return Result.success(skuFullReduction);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SkuFullReductionController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:skufullreduction:save")
-    public R save(@RequestBody SkuFullReduction skuFullReduction){
-		skuFullReductionService.save(skuFullReduction);
+    public Result<Boolean> save(@RequestBody SkuFullReduction skuFullReduction){
 
-        return R.ok();
+        return Result.success(skuFullReductionService.save(skuFullReduction));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SkuFullReductionController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:skufullreduction:update")
-    public R update(@RequestBody SkuFullReduction skuFullReduction){
-		skuFullReductionService.updateById(skuFullReduction);
+    public Result<Boolean> update(@RequestBody SkuFullReduction skuFullReduction){
 
-        return R.ok();
+        return Result.success(skuFullReductionService.updateById(skuFullReduction));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SkuFullReductionController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:skufullreduction:delete")
-    public R delete(@RequestBody Long[] ids){
-		skuFullReductionService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(skuFullReductionService.removeByIds(Arrays.asList(ids)));
     }
 
 }

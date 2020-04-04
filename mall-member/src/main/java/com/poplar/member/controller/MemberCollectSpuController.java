@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.member.domain.MemberCollectSpu;
 import com.poplar.member.service.MemberCollectSpuService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:23
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/membercollectspu")
@@ -36,10 +36,10 @@ public class MemberCollectSpuController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:membercollectspu:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = memberCollectSpuService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class MemberCollectSpuController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:membercollectspu:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<MemberCollectSpu> info(@PathVariable("id") Long id){
 		MemberCollectSpu memberCollectSpu = memberCollectSpuService.getById(id);
 
-        return R.ok().put("memberCollectSpu", memberCollectSpu);
+        return Result.success(memberCollectSpu);
     }
 
     /**
@@ -59,10 +59,9 @@ public class MemberCollectSpuController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:membercollectspu:save")
-    public R save(@RequestBody MemberCollectSpu memberCollectSpu){
-		memberCollectSpuService.save(memberCollectSpu);
+    public Result<Boolean> save(@RequestBody MemberCollectSpu memberCollectSpu){
 
-        return R.ok();
+        return Result.success(memberCollectSpuService.save(memberCollectSpu));
     }
 
     /**
@@ -70,10 +69,9 @@ public class MemberCollectSpuController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:membercollectspu:update")
-    public R update(@RequestBody MemberCollectSpu memberCollectSpu){
-		memberCollectSpuService.updateById(memberCollectSpu);
+    public Result<Boolean> update(@RequestBody MemberCollectSpu memberCollectSpu){
 
-        return R.ok();
+        return Result.success(memberCollectSpuService.updateById(memberCollectSpu));
     }
 
     /**
@@ -81,10 +79,9 @@ public class MemberCollectSpuController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:membercollectspu:delete")
-    public R delete(@RequestBody Long[] ids){
-		memberCollectSpuService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(memberCollectSpuService.removeByIds(Arrays.asList(ids)));
     }
 
 }

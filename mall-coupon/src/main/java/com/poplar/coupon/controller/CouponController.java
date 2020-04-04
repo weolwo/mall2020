@@ -1,13 +1,14 @@
 package com.poplar.coupon.controller;
 
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 import com.poplar.coupon.domain.Coupon;
 import com.poplar.coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,7 +20,7 @@ import java.util.Map;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/coupon")
@@ -27,15 +28,24 @@ public class CouponController {
     @Autowired
     private CouponService couponService;
 
+    @RequestMapping("/couponList")
+    public Result<Coupon> getCouponList(){
+        Coupon coupon = new Coupon();
+        coupon.setNum(1);
+        coupon.setCouponName("满100减10");
+        coupon.setEndTime(new Date());
+        return Result.success(coupon);
+    }
+
     /**
      * 列表
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:coupon:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = couponService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -44,10 +54,10 @@ public class CouponController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:coupon:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<Coupon> info(@PathVariable("id") Long id){
 		Coupon coupon = couponService.getById(id);
 
-        return R.ok().put("coupon", coupon);
+        return Result.success(coupon);
     }
 
     /**
@@ -55,10 +65,9 @@ public class CouponController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:coupon:save")
-    public R save(@RequestBody Coupon coupon){
-		couponService.save(coupon);
+    public Result<Boolean> save(@RequestBody Coupon coupon){
 
-        return R.ok();
+        return Result.success(couponService.save(coupon));
     }
 
     /**
@@ -66,10 +75,9 @@ public class CouponController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:coupon:update")
-    public R update(@RequestBody Coupon coupon){
-		couponService.updateById(coupon);
+    public Result<Boolean> update(@RequestBody Coupon coupon){
 
-        return R.ok();
+        return Result.success(couponService.updateById(coupon));
     }
 
     /**
@@ -77,10 +85,9 @@ public class CouponController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:coupon:delete")
-    public R delete(@RequestBody Long[] ids){
-		couponService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(couponService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.order.domain.OrderOperateHistory;
 import com.poplar.order.service.OrderOperateHistoryService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:29:39
+ * @date 2020-04-03 20:45:56
  */
 @RestController
 @RequestMapping("order/orderoperatehistory")
@@ -36,10 +36,10 @@ public class OrderOperateHistoryController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("order:orderoperatehistory:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = orderOperateHistoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class OrderOperateHistoryController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("order:orderoperatehistory:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<OrderOperateHistory> info(@PathVariable("id") Long id){
 		OrderOperateHistory orderOperateHistory = orderOperateHistoryService.getById(id);
 
-        return R.ok().put("orderOperateHistory", orderOperateHistory);
+        return Result.success(orderOperateHistory);
     }
 
     /**
@@ -59,10 +59,9 @@ public class OrderOperateHistoryController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("order:orderoperatehistory:save")
-    public R save(@RequestBody OrderOperateHistory orderOperateHistory){
-		orderOperateHistoryService.save(orderOperateHistory);
+    public Result<Boolean> save(@RequestBody OrderOperateHistory orderOperateHistory){
 
-        return R.ok();
+        return Result.success(orderOperateHistoryService.save(orderOperateHistory));
     }
 
     /**
@@ -70,10 +69,9 @@ public class OrderOperateHistoryController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("order:orderoperatehistory:update")
-    public R update(@RequestBody OrderOperateHistory orderOperateHistory){
-		orderOperateHistoryService.updateById(orderOperateHistory);
+    public Result<Boolean> update(@RequestBody OrderOperateHistory orderOperateHistory){
 
-        return R.ok();
+        return Result.success(orderOperateHistoryService.updateById(orderOperateHistory));
     }
 
     /**
@@ -81,10 +79,9 @@ public class OrderOperateHistoryController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("order:orderoperatehistory:delete")
-    public R delete(@RequestBody Long[] ids){
-		orderOperateHistoryService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(orderOperateHistoryService.removeByIds(Arrays.asList(ids)));
     }
 
 }

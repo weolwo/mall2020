@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.SkuLadder;
 import com.poplar.coupon.service.SkuLadderService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/skuladder")
@@ -36,10 +36,10 @@ public class SkuLadderController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:skuladder:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = skuLadderService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SkuLadderController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:skuladder:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SkuLadder> info(@PathVariable("id") Long id){
 		SkuLadder skuLadder = skuLadderService.getById(id);
 
-        return R.ok().put("skuLadder", skuLadder);
+        return Result.success(skuLadder);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SkuLadderController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:skuladder:save")
-    public R save(@RequestBody SkuLadder skuLadder){
-		skuLadderService.save(skuLadder);
+    public Result<Boolean> save(@RequestBody SkuLadder skuLadder){
 
-        return R.ok();
+        return Result.success(skuLadderService.save(skuLadder));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SkuLadderController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:skuladder:update")
-    public R update(@RequestBody SkuLadder skuLadder){
-		skuLadderService.updateById(skuLadder);
+    public Result<Boolean> update(@RequestBody SkuLadder skuLadder){
 
-        return R.ok();
+        return Result.success(skuLadderService.updateById(skuLadder));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SkuLadderController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:skuladder:delete")
-    public R delete(@RequestBody Long[] ids){
-		skuLadderService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(skuLadderService.removeByIds(Arrays.asList(ids)));
     }
 
 }

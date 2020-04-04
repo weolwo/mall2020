@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.member.domain.MemberLevel;
 import com.poplar.member.service.MemberLevelService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:22
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/memberlevel")
@@ -36,10 +36,10 @@ public class MemberLevelController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:memberlevel:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = memberLevelService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class MemberLevelController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:memberlevel:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<MemberLevel> info(@PathVariable("id") Long id){
 		MemberLevel memberLevel = memberLevelService.getById(id);
 
-        return R.ok().put("memberLevel", memberLevel);
+        return Result.success(memberLevel);
     }
 
     /**
@@ -59,10 +59,9 @@ public class MemberLevelController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:memberlevel:save")
-    public R save(@RequestBody MemberLevel memberLevel){
-		memberLevelService.save(memberLevel);
+    public Result<Boolean> save(@RequestBody MemberLevel memberLevel){
 
-        return R.ok();
+        return Result.success(memberLevelService.save(memberLevel));
     }
 
     /**
@@ -70,10 +69,9 @@ public class MemberLevelController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:memberlevel:update")
-    public R update(@RequestBody MemberLevel memberLevel){
-		memberLevelService.updateById(memberLevel);
+    public Result<Boolean> update(@RequestBody MemberLevel memberLevel){
 
-        return R.ok();
+        return Result.success(memberLevelService.updateById(memberLevel));
     }
 
     /**
@@ -81,10 +79,9 @@ public class MemberLevelController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:memberlevel:delete")
-    public R delete(@RequestBody Long[] ids){
-		memberLevelService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(memberLevelService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.SkuSaleAttrValue;
 import com.poplar.product.service.SkuSaleAttrValueService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:11
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/skusaleattrvalue")
@@ -36,10 +36,10 @@ public class SkuSaleAttrValueController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:skusaleattrvalue:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = skuSaleAttrValueService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SkuSaleAttrValueController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:skusaleattrvalue:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SkuSaleAttrValue> info(@PathVariable("id") Long id){
 		SkuSaleAttrValue skuSaleAttrValue = skuSaleAttrValueService.getById(id);
 
-        return R.ok().put("skuSaleAttrValue", skuSaleAttrValue);
+        return Result.success(skuSaleAttrValue);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SkuSaleAttrValueController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:skusaleattrvalue:save")
-    public R save(@RequestBody SkuSaleAttrValue skuSaleAttrValue){
-		skuSaleAttrValueService.save(skuSaleAttrValue);
+    public Result<Boolean> save(@RequestBody SkuSaleAttrValue skuSaleAttrValue){
 
-        return R.ok();
+        return Result.success(skuSaleAttrValueService.save(skuSaleAttrValue));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SkuSaleAttrValueController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:skusaleattrvalue:update")
-    public R update(@RequestBody SkuSaleAttrValue skuSaleAttrValue){
-		skuSaleAttrValueService.updateById(skuSaleAttrValue);
+    public Result<Boolean> update(@RequestBody SkuSaleAttrValue skuSaleAttrValue){
 
-        return R.ok();
+        return Result.success(skuSaleAttrValueService.updateById(skuSaleAttrValue));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SkuSaleAttrValueController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:skusaleattrvalue:delete")
-    public R delete(@RequestBody Long[] ids){
-		skuSaleAttrValueService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(skuSaleAttrValueService.removeByIds(Arrays.asList(ids)));
     }
 
 }

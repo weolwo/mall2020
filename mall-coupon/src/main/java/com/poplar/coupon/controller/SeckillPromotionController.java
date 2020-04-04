@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.SeckillPromotion;
 import com.poplar.coupon.service.SeckillPromotionService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/seckillpromotion")
@@ -36,10 +36,10 @@ public class SeckillPromotionController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:seckillpromotion:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = seckillPromotionService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SeckillPromotionController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:seckillpromotion:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SeckillPromotion> info(@PathVariable("id") Long id){
 		SeckillPromotion seckillPromotion = seckillPromotionService.getById(id);
 
-        return R.ok().put("seckillPromotion", seckillPromotion);
+        return Result.success(seckillPromotion);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SeckillPromotionController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:seckillpromotion:save")
-    public R save(@RequestBody SeckillPromotion seckillPromotion){
-		seckillPromotionService.save(seckillPromotion);
+    public Result<Boolean> save(@RequestBody SeckillPromotion seckillPromotion){
 
-        return R.ok();
+        return Result.success(seckillPromotionService.save(seckillPromotion));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SeckillPromotionController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:seckillpromotion:update")
-    public R update(@RequestBody SeckillPromotion seckillPromotion){
-		seckillPromotionService.updateById(seckillPromotion);
+    public Result<Boolean> update(@RequestBody SeckillPromotion seckillPromotion){
 
-        return R.ok();
+        return Result.success(seckillPromotionService.updateById(seckillPromotion));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SeckillPromotionController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:seckillpromotion:delete")
-    public R delete(@RequestBody Long[] ids){
-		seckillPromotionService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(seckillPromotionService.removeByIds(Arrays.asList(ids)));
     }
 
 }

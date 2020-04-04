@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.order.domain.RefundInfo;
 import com.poplar.order.service.RefundInfoService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:29:39
+ * @date 2020-04-03 20:45:56
  */
 @RestController
 @RequestMapping("order/refundinfo")
@@ -36,10 +36,10 @@ public class RefundInfoController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("order:refundinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = refundInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class RefundInfoController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("order:refundinfo:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<RefundInfo> info(@PathVariable("id") Long id){
 		RefundInfo refundInfo = refundInfoService.getById(id);
 
-        return R.ok().put("refundInfo", refundInfo);
+        return Result.success(refundInfo);
     }
 
     /**
@@ -59,10 +59,9 @@ public class RefundInfoController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("order:refundinfo:save")
-    public R save(@RequestBody RefundInfo refundInfo){
-		refundInfoService.save(refundInfo);
+    public Result<Boolean> save(@RequestBody RefundInfo refundInfo){
 
-        return R.ok();
+        return Result.success(refundInfoService.save(refundInfo));
     }
 
     /**
@@ -70,10 +69,9 @@ public class RefundInfoController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("order:refundinfo:update")
-    public R update(@RequestBody RefundInfo refundInfo){
-		refundInfoService.updateById(refundInfo);
+    public Result<Boolean> update(@RequestBody RefundInfo refundInfo){
 
-        return R.ok();
+        return Result.success(refundInfoService.updateById(refundInfo));
     }
 
     /**
@@ -81,10 +79,9 @@ public class RefundInfoController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("order:refundinfo:delete")
-    public R delete(@RequestBody Long[] ids){
-		refundInfoService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(refundInfoService.removeByIds(Arrays.asList(ids)));
     }
 
 }

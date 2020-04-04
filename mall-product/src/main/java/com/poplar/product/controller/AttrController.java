@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.Attr;
 import com.poplar.product.service.AttrService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:10
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/attr")
@@ -36,10 +36,10 @@ public class AttrController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:attr:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = attrService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class AttrController {
      */
     @RequestMapping("/info/{attrId}")
     //@RequiresPermissions("product:attr:info")
-    public R info(@PathVariable("attrId") Long attrId){
+    public Result<Attr> info(@PathVariable("attrId") Long attrId){
 		Attr attr = attrService.getById(attrId);
 
-        return R.ok().put("attr", attr);
+        return Result.success(attr);
     }
 
     /**
@@ -59,10 +59,9 @@ public class AttrController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:attr:save")
-    public R save(@RequestBody Attr attr){
-		attrService.save(attr);
+    public Result<Boolean> save(@RequestBody Attr attr){
 
-        return R.ok();
+        return Result.success(attrService.save(attr));
     }
 
     /**
@@ -70,10 +69,9 @@ public class AttrController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:attr:update")
-    public R update(@RequestBody Attr attr){
-		attrService.updateById(attr);
+    public Result<Boolean> update(@RequestBody Attr attr){
 
-        return R.ok();
+        return Result.success(attrService.updateById(attr));
     }
 
     /**
@@ -81,10 +79,9 @@ public class AttrController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:attr:delete")
-    public R delete(@RequestBody Long[] attrIds){
-		attrService.removeByIds(Arrays.asList(attrIds));
+    public Result<Boolean> delete(@RequestBody Long[] attrIds){
 
-        return R.ok();
+        return Result.success(attrService.removeByIds(Arrays.asList(attrIds)));
     }
 
 }

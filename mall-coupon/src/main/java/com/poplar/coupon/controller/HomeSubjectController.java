@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.HomeSubject;
 import com.poplar.coupon.service.HomeSubjectService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/homesubject")
@@ -36,10 +36,10 @@ public class HomeSubjectController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:homesubject:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = homeSubjectService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class HomeSubjectController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:homesubject:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<HomeSubject> info(@PathVariable("id") Long id){
 		HomeSubject homeSubject = homeSubjectService.getById(id);
 
-        return R.ok().put("homeSubject", homeSubject);
+        return Result.success(homeSubject);
     }
 
     /**
@@ -59,10 +59,9 @@ public class HomeSubjectController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:homesubject:save")
-    public R save(@RequestBody HomeSubject homeSubject){
-		homeSubjectService.save(homeSubject);
+    public Result<Boolean> save(@RequestBody HomeSubject homeSubject){
 
-        return R.ok();
+        return Result.success(homeSubjectService.save(homeSubject));
     }
 
     /**
@@ -70,10 +69,9 @@ public class HomeSubjectController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:homesubject:update")
-    public R update(@RequestBody HomeSubject homeSubject){
-		homeSubjectService.updateById(homeSubject);
+    public Result<Boolean> update(@RequestBody HomeSubject homeSubject){
 
-        return R.ok();
+        return Result.success(homeSubjectService.updateById(homeSubject));
     }
 
     /**
@@ -81,10 +79,9 @@ public class HomeSubjectController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:homesubject:delete")
-    public R delete(@RequestBody Long[] ids){
-		homeSubjectService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(homeSubjectService.removeByIds(Arrays.asList(ids)));
     }
 
 }

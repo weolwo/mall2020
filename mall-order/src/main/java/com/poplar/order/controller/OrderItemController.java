@@ -1,20 +1,16 @@
 package com.poplar.order.controller;
 
+import com.poplar.common.utils.PageUtils;
+import com.poplar.common.utils.Result;
+import com.poplar.order.domain.OrderItem;
+import com.poplar.order.service.OrderItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.poplar.order.domain.OrderItem;
-import com.poplar.order.service.OrderItemService;
-import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
 
 
 
@@ -23,7 +19,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:29:39
+ * @date 2020-04-03 20:45:56
  */
 @RestController
 @RequestMapping("order/orderitem")
@@ -36,10 +32,10 @@ public class OrderItemController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("order:orderitem:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = orderItemService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +44,10 @@ public class OrderItemController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("order:orderitem:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<OrderItem> info(@PathVariable("id") Long id){
 		OrderItem orderItem = orderItemService.getById(id);
 
-        return R.ok().put("orderItem", orderItem);
+        return Result.success(orderItem);
     }
 
     /**
@@ -59,10 +55,9 @@ public class OrderItemController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("order:orderitem:save")
-    public R save(@RequestBody OrderItem orderItem){
-		orderItemService.save(orderItem);
+    public Result<Boolean> save(@RequestBody OrderItem orderItem){
 
-        return R.ok();
+        return Result.success(orderItemService.save(orderItem));
     }
 
     /**
@@ -70,10 +65,9 @@ public class OrderItemController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("order:orderitem:update")
-    public R update(@RequestBody OrderItem orderItem){
-		orderItemService.updateById(orderItem);
+    public Result<Boolean> update(@RequestBody OrderItem orderItem){
 
-        return R.ok();
+        return Result.success(orderItemService.updateById(orderItem));
     }
 
     /**
@@ -81,10 +75,9 @@ public class OrderItemController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("order:orderitem:delete")
-    public R delete(@RequestBody Long[] ids){
-		orderItemService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(orderItemService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.member.domain.MemberCollectSubject;
 import com.poplar.member.service.MemberCollectSubjectService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:22
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/membercollectsubject")
@@ -36,10 +36,10 @@ public class MemberCollectSubjectController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:membercollectsubject:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = memberCollectSubjectService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class MemberCollectSubjectController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:membercollectsubject:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<MemberCollectSubject> info(@PathVariable("id") Long id){
 		MemberCollectSubject memberCollectSubject = memberCollectSubjectService.getById(id);
 
-        return R.ok().put("memberCollectSubject", memberCollectSubject);
+        return Result.success(memberCollectSubject);
     }
 
     /**
@@ -59,10 +59,9 @@ public class MemberCollectSubjectController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:membercollectsubject:save")
-    public R save(@RequestBody MemberCollectSubject memberCollectSubject){
-		memberCollectSubjectService.save(memberCollectSubject);
+    public Result<Boolean> save(@RequestBody MemberCollectSubject memberCollectSubject){
 
-        return R.ok();
+        return Result.success(memberCollectSubjectService.save(memberCollectSubject));
     }
 
     /**
@@ -70,10 +69,9 @@ public class MemberCollectSubjectController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:membercollectsubject:update")
-    public R update(@RequestBody MemberCollectSubject memberCollectSubject){
-		memberCollectSubjectService.updateById(memberCollectSubject);
+    public Result<Boolean> update(@RequestBody MemberCollectSubject memberCollectSubject){
 
-        return R.ok();
+        return Result.success(memberCollectSubjectService.updateById(memberCollectSubject));
     }
 
     /**
@@ -81,10 +79,9 @@ public class MemberCollectSubjectController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:membercollectsubject:delete")
-    public R delete(@RequestBody Long[] ids){
-		memberCollectSubjectService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(memberCollectSubjectService.removeByIds(Arrays.asList(ids)));
     }
 
 }

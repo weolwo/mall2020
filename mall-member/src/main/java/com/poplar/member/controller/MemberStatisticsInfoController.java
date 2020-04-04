@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.member.domain.MemberStatisticsInfo;
 import com.poplar.member.service.MemberStatisticsInfoService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:22
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/memberstatisticsinfo")
@@ -36,10 +36,10 @@ public class MemberStatisticsInfoController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:memberstatisticsinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = memberStatisticsInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class MemberStatisticsInfoController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:memberstatisticsinfo:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<MemberStatisticsInfo> info(@PathVariable("id") Long id){
 		MemberStatisticsInfo memberStatisticsInfo = memberStatisticsInfoService.getById(id);
 
-        return R.ok().put("memberStatisticsInfo", memberStatisticsInfo);
+        return Result.success(memberStatisticsInfo);
     }
 
     /**
@@ -59,10 +59,9 @@ public class MemberStatisticsInfoController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:memberstatisticsinfo:save")
-    public R save(@RequestBody MemberStatisticsInfo memberStatisticsInfo){
-		memberStatisticsInfoService.save(memberStatisticsInfo);
+    public Result<Boolean> save(@RequestBody MemberStatisticsInfo memberStatisticsInfo){
 
-        return R.ok();
+        return Result.success(memberStatisticsInfoService.save(memberStatisticsInfo));
     }
 
     /**
@@ -70,10 +69,9 @@ public class MemberStatisticsInfoController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:memberstatisticsinfo:update")
-    public R update(@RequestBody MemberStatisticsInfo memberStatisticsInfo){
-		memberStatisticsInfoService.updateById(memberStatisticsInfo);
+    public Result<Boolean> update(@RequestBody MemberStatisticsInfo memberStatisticsInfo){
 
-        return R.ok();
+        return Result.success(memberStatisticsInfoService.updateById(memberStatisticsInfo));
     }
 
     /**
@@ -81,10 +79,9 @@ public class MemberStatisticsInfoController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:memberstatisticsinfo:delete")
-    public R delete(@RequestBody Long[] ids){
-		memberStatisticsInfoService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(memberStatisticsInfoService.removeByIds(Arrays.asList(ids)));
     }
 
 }

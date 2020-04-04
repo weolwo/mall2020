@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.CouponHistory;
 import com.poplar.coupon.service.CouponHistoryService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/couponhistory")
@@ -36,10 +36,10 @@ public class CouponHistoryController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:couponhistory:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = couponHistoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class CouponHistoryController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:couponhistory:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<CouponHistory> info(@PathVariable("id") Long id){
 		CouponHistory couponHistory = couponHistoryService.getById(id);
 
-        return R.ok().put("couponHistory", couponHistory);
+        return Result.success(couponHistory);
     }
 
     /**
@@ -59,10 +59,9 @@ public class CouponHistoryController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:couponhistory:save")
-    public R save(@RequestBody CouponHistory couponHistory){
-		couponHistoryService.save(couponHistory);
+    public Result<Boolean> save(@RequestBody CouponHistory couponHistory){
 
-        return R.ok();
+        return Result.success(couponHistoryService.save(couponHistory));
     }
 
     /**
@@ -70,10 +69,9 @@ public class CouponHistoryController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:couponhistory:update")
-    public R update(@RequestBody CouponHistory couponHistory){
-		couponHistoryService.updateById(couponHistory);
+    public Result<Boolean> update(@RequestBody CouponHistory couponHistory){
 
-        return R.ok();
+        return Result.success(couponHistoryService.updateById(couponHistory));
     }
 
     /**
@@ -81,10 +79,9 @@ public class CouponHistoryController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:couponhistory:delete")
-    public R delete(@RequestBody Long[] ids){
-		couponHistoryService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(couponHistoryService.removeByIds(Arrays.asList(ids)));
     }
 
 }

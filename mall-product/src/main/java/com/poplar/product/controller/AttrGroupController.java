@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.AttrGroup;
 import com.poplar.product.service.AttrGroupService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:11
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/attrgroup")
@@ -36,10 +36,10 @@ public class AttrGroupController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:attrgroup:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = attrGroupService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class AttrGroupController {
      */
     @RequestMapping("/info/{attrGroupId}")
     //@RequiresPermissions("product:attrgroup:info")
-    public R info(@PathVariable("attrGroupId") Long attrGroupId){
+    public Result<AttrGroup> info(@PathVariable("attrGroupId") Long attrGroupId){
 		AttrGroup attrGroup = attrGroupService.getById(attrGroupId);
 
-        return R.ok().put("attrGroup", attrGroup);
+        return Result.success(attrGroup);
     }
 
     /**
@@ -59,10 +59,9 @@ public class AttrGroupController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:attrgroup:save")
-    public R save(@RequestBody AttrGroup attrGroup){
-		attrGroupService.save(attrGroup);
+    public Result<Boolean> save(@RequestBody AttrGroup attrGroup){
 
-        return R.ok();
+        return Result.success(attrGroupService.save(attrGroup));
     }
 
     /**
@@ -70,10 +69,9 @@ public class AttrGroupController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:attrgroup:update")
-    public R update(@RequestBody AttrGroup attrGroup){
-		attrGroupService.updateById(attrGroup);
+    public Result<Boolean> update(@RequestBody AttrGroup attrGroup){
 
-        return R.ok();
+        return Result.success(attrGroupService.updateById(attrGroup));
     }
 
     /**
@@ -81,10 +79,9 @@ public class AttrGroupController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:attrgroup:delete")
-    public R delete(@RequestBody Long[] attrGroupIds){
-		attrGroupService.removeByIds(Arrays.asList(attrGroupIds));
+    public Result<Boolean> delete(@RequestBody Long[] attrGroupIds){
 
-        return R.ok();
+        return Result.success(attrGroupService.removeByIds(Arrays.asList(attrGroupIds)));
     }
 
 }

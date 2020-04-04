@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.ware.domain.Purchase;
 import com.poplar.ware.service.PurchaseService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:22:22
+ * @date 2020-04-03 20:53:53
  */
 @RestController
 @RequestMapping("ware/purchase")
@@ -36,10 +36,10 @@ public class PurchaseController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("ware:purchase:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = purchaseService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class PurchaseController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("ware:purchase:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<Purchase> info(@PathVariable("id") Long id){
 		Purchase purchase = purchaseService.getById(id);
 
-        return R.ok().put("purchase", purchase);
+        return Result.success(purchase);
     }
 
     /**
@@ -59,10 +59,9 @@ public class PurchaseController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("ware:purchase:save")
-    public R save(@RequestBody Purchase purchase){
-		purchaseService.save(purchase);
+    public Result<Boolean> save(@RequestBody Purchase purchase){
 
-        return R.ok();
+        return Result.success(purchaseService.save(purchase));
     }
 
     /**
@@ -70,10 +69,9 @@ public class PurchaseController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("ware:purchase:update")
-    public R update(@RequestBody Purchase purchase){
-		purchaseService.updateById(purchase);
+    public Result<Boolean> update(@RequestBody Purchase purchase){
 
-        return R.ok();
+        return Result.success(purchaseService.updateById(purchase));
     }
 
     /**
@@ -81,10 +79,9 @@ public class PurchaseController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("ware:purchase:delete")
-    public R delete(@RequestBody Long[] ids){
-		purchaseService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(purchaseService.removeByIds(Arrays.asList(ids)));
     }
 
 }

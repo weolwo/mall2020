@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.order.domain.OrderSetting;
 import com.poplar.order.service.OrderSettingService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:29:39
+ * @date 2020-04-03 20:45:56
  */
 @RestController
 @RequestMapping("order/ordersetting")
@@ -36,10 +36,10 @@ public class OrderSettingController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("order:ordersetting:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = orderSettingService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class OrderSettingController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("order:ordersetting:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<OrderSetting> info(@PathVariable("id") Long id){
 		OrderSetting orderSetting = orderSettingService.getById(id);
 
-        return R.ok().put("orderSetting", orderSetting);
+        return Result.success(orderSetting);
     }
 
     /**
@@ -59,10 +59,9 @@ public class OrderSettingController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("order:ordersetting:save")
-    public R save(@RequestBody OrderSetting orderSetting){
-		orderSettingService.save(orderSetting);
+    public Result<Boolean> save(@RequestBody OrderSetting orderSetting){
 
-        return R.ok();
+        return Result.success(orderSettingService.save(orderSetting));
     }
 
     /**
@@ -70,10 +69,9 @@ public class OrderSettingController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("order:ordersetting:update")
-    public R update(@RequestBody OrderSetting orderSetting){
-		orderSettingService.updateById(orderSetting);
+    public Result<Boolean> update(@RequestBody OrderSetting orderSetting){
 
-        return R.ok();
+        return Result.success(orderSettingService.updateById(orderSetting));
     }
 
     /**
@@ -81,10 +79,9 @@ public class OrderSettingController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("order:ordersetting:delete")
-    public R delete(@RequestBody Long[] ids){
-		orderSettingService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(orderSettingService.removeByIds(Arrays.asList(ids)));
     }
 
 }

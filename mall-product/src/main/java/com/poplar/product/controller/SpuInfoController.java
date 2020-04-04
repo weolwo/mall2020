@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.SpuInfo;
 import com.poplar.product.service.SpuInfoService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:10
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/spuinfo")
@@ -36,10 +36,10 @@ public class SpuInfoController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:spuinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = spuInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class SpuInfoController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:spuinfo:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<SpuInfo> info(@PathVariable("id") Long id){
 		SpuInfo spuInfo = spuInfoService.getById(id);
 
-        return R.ok().put("spuInfo", spuInfo);
+        return Result.success(spuInfo);
     }
 
     /**
@@ -59,10 +59,9 @@ public class SpuInfoController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:spuinfo:save")
-    public R save(@RequestBody SpuInfo spuInfo){
-		spuInfoService.save(spuInfo);
+    public Result<Boolean> save(@RequestBody SpuInfo spuInfo){
 
-        return R.ok();
+        return Result.success(spuInfoService.save(spuInfo));
     }
 
     /**
@@ -70,10 +69,9 @@ public class SpuInfoController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:spuinfo:update")
-    public R update(@RequestBody SpuInfo spuInfo){
-		spuInfoService.updateById(spuInfo);
+    public Result<Boolean> update(@RequestBody SpuInfo spuInfo){
 
-        return R.ok();
+        return Result.success(spuInfoService.updateById(spuInfo));
     }
 
     /**
@@ -81,10 +79,9 @@ public class SpuInfoController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:spuinfo:delete")
-    public R delete(@RequestBody Long[] ids){
-		spuInfoService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(spuInfoService.removeByIds(Arrays.asList(ids)));
     }
 
 }

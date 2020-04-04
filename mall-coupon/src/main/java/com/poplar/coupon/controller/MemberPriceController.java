@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.coupon.domain.MemberPrice;
 import com.poplar.coupon.service.MemberPriceService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:51:34
+ * @date 2020-04-03 20:56:20
  */
 @RestController
 @RequestMapping("coupon/memberprice")
@@ -36,10 +36,10 @@ public class MemberPriceController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("coupon:memberprice:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = memberPriceService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class MemberPriceController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("coupon:memberprice:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<MemberPrice> info(@PathVariable("id") Long id){
 		MemberPrice memberPrice = memberPriceService.getById(id);
 
-        return R.ok().put("memberPrice", memberPrice);
+        return Result.success(memberPrice);
     }
 
     /**
@@ -59,10 +59,9 @@ public class MemberPriceController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("coupon:memberprice:save")
-    public R save(@RequestBody MemberPrice memberPrice){
-		memberPriceService.save(memberPrice);
+    public Result<Boolean> save(@RequestBody MemberPrice memberPrice){
 
-        return R.ok();
+        return Result.success(memberPriceService.save(memberPrice));
     }
 
     /**
@@ -70,10 +69,9 @@ public class MemberPriceController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("coupon:memberprice:update")
-    public R update(@RequestBody MemberPrice memberPrice){
-		memberPriceService.updateById(memberPrice);
+    public Result<Boolean> update(@RequestBody MemberPrice memberPrice){
 
-        return R.ok();
+        return Result.success(memberPriceService.updateById(memberPrice));
     }
 
     /**
@@ -81,10 +79,9 @@ public class MemberPriceController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("coupon:memberprice:delete")
-    public R delete(@RequestBody Long[] ids){
-		memberPriceService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(memberPriceService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.member.domain.IntegrationChangeHistory;
 import com.poplar.member.service.IntegrationChangeHistoryService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:10:23
+ * @date 2020-04-03 20:57:54
  */
 @RestController
 @RequestMapping("member/integrationchangehistory")
@@ -36,10 +36,10 @@ public class IntegrationChangeHistoryController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("member:integrationchangehistory:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = integrationChangeHistoryService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class IntegrationChangeHistoryController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("member:integrationchangehistory:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<IntegrationChangeHistory> info(@PathVariable("id") Long id){
 		IntegrationChangeHistory integrationChangeHistory = integrationChangeHistoryService.getById(id);
 
-        return R.ok().put("integrationChangeHistory", integrationChangeHistory);
+        return Result.success(integrationChangeHistory);
     }
 
     /**
@@ -59,10 +59,9 @@ public class IntegrationChangeHistoryController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("member:integrationchangehistory:save")
-    public R save(@RequestBody IntegrationChangeHistory integrationChangeHistory){
-		integrationChangeHistoryService.save(integrationChangeHistory);
+    public Result<Boolean> save(@RequestBody IntegrationChangeHistory integrationChangeHistory){
 
-        return R.ok();
+        return Result.success(integrationChangeHistoryService.save(integrationChangeHistory));
     }
 
     /**
@@ -70,10 +69,9 @@ public class IntegrationChangeHistoryController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("member:integrationchangehistory:update")
-    public R update(@RequestBody IntegrationChangeHistory integrationChangeHistory){
-		integrationChangeHistoryService.updateById(integrationChangeHistory);
+    public Result<Boolean> update(@RequestBody IntegrationChangeHistory integrationChangeHistory){
 
-        return R.ok();
+        return Result.success(integrationChangeHistoryService.updateById(integrationChangeHistory));
     }
 
     /**
@@ -81,10 +79,9 @@ public class IntegrationChangeHistoryController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("member:integrationchangehistory:delete")
-    public R delete(@RequestBody Long[] ids){
-		integrationChangeHistoryService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(integrationChangeHistoryService.removeByIds(Arrays.asList(ids)));
     }
 
 }

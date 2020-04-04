@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.order.domain.OrderReturnApply;
 import com.poplar.order.service.OrderReturnApplyService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:29:40
+ * @date 2020-04-03 20:45:56
  */
 @RestController
 @RequestMapping("order/orderreturnapply")
@@ -36,10 +36,10 @@ public class OrderReturnApplyController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("order:orderreturnapply:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = orderReturnApplyService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class OrderReturnApplyController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("order:orderreturnapply:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<OrderReturnApply> info(@PathVariable("id") Long id){
 		OrderReturnApply orderReturnApply = orderReturnApplyService.getById(id);
 
-        return R.ok().put("orderReturnApply", orderReturnApply);
+        return Result.success(orderReturnApply);
     }
 
     /**
@@ -59,10 +59,9 @@ public class OrderReturnApplyController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("order:orderreturnapply:save")
-    public R save(@RequestBody OrderReturnApply orderReturnApply){
-		orderReturnApplyService.save(orderReturnApply);
+    public Result<Boolean> save(@RequestBody OrderReturnApply orderReturnApply){
 
-        return R.ok();
+        return Result.success(orderReturnApplyService.save(orderReturnApply));
     }
 
     /**
@@ -70,10 +69,9 @@ public class OrderReturnApplyController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("order:orderreturnapply:update")
-    public R update(@RequestBody OrderReturnApply orderReturnApply){
-		orderReturnApplyService.updateById(orderReturnApply);
+    public Result<Boolean> update(@RequestBody OrderReturnApply orderReturnApply){
 
-        return R.ok();
+        return Result.success(orderReturnApplyService.updateById(orderReturnApply));
     }
 
     /**
@@ -81,10 +79,9 @@ public class OrderReturnApplyController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("order:orderreturnapply:delete")
-    public R delete(@RequestBody Long[] ids){
-		orderReturnApplyService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(orderReturnApplyService.removeByIds(Arrays.asList(ids)));
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.product.domain.AttrAttrgroupRelation;
 import com.poplar.product.service.AttrAttrgroupRelationService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 14:38:10
+ * @date 2020-04-03 20:51:35
  */
 @RestController
 @RequestMapping("product/attrattrgrouprelation")
@@ -36,10 +36,10 @@ public class AttrAttrgroupRelationController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:attrattrgrouprelation:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = attrAttrgroupRelationService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class AttrAttrgroupRelationController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:attrattrgrouprelation:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<AttrAttrgroupRelation> info(@PathVariable("id") Long id){
 		AttrAttrgroupRelation attrAttrgroupRelation = attrAttrgroupRelationService.getById(id);
 
-        return R.ok().put("attrAttrgroupRelation", attrAttrgroupRelation);
+        return Result.success(attrAttrgroupRelation);
     }
 
     /**
@@ -59,10 +59,9 @@ public class AttrAttrgroupRelationController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:attrattrgrouprelation:save")
-    public R save(@RequestBody AttrAttrgroupRelation attrAttrgroupRelation){
-		attrAttrgroupRelationService.save(attrAttrgroupRelation);
+    public Result<Boolean> save(@RequestBody AttrAttrgroupRelation attrAttrgroupRelation){
 
-        return R.ok();
+        return Result.success(attrAttrgroupRelationService.save(attrAttrgroupRelation));
     }
 
     /**
@@ -70,10 +69,9 @@ public class AttrAttrgroupRelationController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("product:attrattrgrouprelation:update")
-    public R update(@RequestBody AttrAttrgroupRelation attrAttrgroupRelation){
-		attrAttrgroupRelationService.updateById(attrAttrgroupRelation);
+    public Result<Boolean> update(@RequestBody AttrAttrgroupRelation attrAttrgroupRelation){
 
-        return R.ok();
+        return Result.success(attrAttrgroupRelationService.updateById(attrAttrgroupRelation));
     }
 
     /**
@@ -81,10 +79,9 @@ public class AttrAttrgroupRelationController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:attrattrgrouprelation:delete")
-    public R delete(@RequestBody Long[] ids){
-		attrAttrgroupRelationService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(attrAttrgroupRelationService.removeByIds(Arrays.asList(ids)));
     }
 
 }

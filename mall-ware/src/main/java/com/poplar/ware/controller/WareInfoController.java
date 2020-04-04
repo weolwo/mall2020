@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poplar.ware.domain.WareInfo;
 import com.poplar.ware.service.WareInfoService;
 import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.R;
+import com.poplar.common.utils.Result;
 
 
 
@@ -23,7 +23,7 @@ import com.poplar.common.utils.R;
  *
  * @author poplar
  * @email poplar@gmail.com
- * @date 2020-04-03 16:22:22
+ * @date 2020-04-03 20:53:53
  */
 @RestController
 @RequestMapping("ware/wareinfo")
@@ -36,10 +36,10 @@ public class WareInfoController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("ware:wareinfo:list")
-    public R list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = wareInfoService.queryPage(params);
 
-        return R.ok().put("page", page);
+        return Result.success(page);
     }
 
 
@@ -48,10 +48,10 @@ public class WareInfoController {
      */
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("ware:wareinfo:info")
-    public R info(@PathVariable("id") Long id){
+    public Result<WareInfo> info(@PathVariable("id") Long id){
 		WareInfo wareInfo = wareInfoService.getById(id);
 
-        return R.ok().put("wareInfo", wareInfo);
+        return Result.success(wareInfo);
     }
 
     /**
@@ -59,10 +59,9 @@ public class WareInfoController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("ware:wareinfo:save")
-    public R save(@RequestBody WareInfo wareInfo){
-		wareInfoService.save(wareInfo);
+    public Result<Boolean> save(@RequestBody WareInfo wareInfo){
 
-        return R.ok();
+        return Result.success(wareInfoService.save(wareInfo));
     }
 
     /**
@@ -70,10 +69,9 @@ public class WareInfoController {
      */
     @RequestMapping("/update")
    // @RequiresPermissions("ware:wareinfo:update")
-    public R update(@RequestBody WareInfo wareInfo){
-		wareInfoService.updateById(wareInfo);
+    public Result<Boolean> update(@RequestBody WareInfo wareInfo){
 
-        return R.ok();
+        return Result.success(wareInfoService.updateById(wareInfo));
     }
 
     /**
@@ -81,10 +79,9 @@ public class WareInfoController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("ware:wareinfo:delete")
-    public R delete(@RequestBody Long[] ids){
-		wareInfoService.removeByIds(Arrays.asList(ids));
+    public Result<Boolean> delete(@RequestBody Long[] ids){
 
-        return R.ok();
+        return Result.success(wareInfoService.removeByIds(Arrays.asList(ids)));
     }
 
 }

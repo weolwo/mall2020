@@ -1,20 +1,16 @@
 package com.poplar.product.controller;
 
-import java.util.Arrays;
+import com.poplar.common.utils.PageUtils;
+import com.poplar.common.utils.Result;
+import com.poplar.product.domain.Category;
+import com.poplar.product.service.CategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.poplar.product.domain.Category;
-import com.poplar.product.service.CategoryService;
-import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.Result;
 
 
 
@@ -41,13 +37,20 @@ public class CategoryController {
 
         return Result.success(page);
     }
-
+    /**
+     * 获取分类列表
+     */
+    @RequestMapping("/getCategory/tree")
+    public Result< List<Category>> getCategoryList(){
+        List<Category> categoryList = categoryService.getCategoryList();
+        return Result.success(categoryList);
+    }
 
     /**
      * 信息
      */
     @RequestMapping("/info/{catId}")
-    //@RequiresPermissions("product:category:info")
+    //@RequiresPermissions("product:categorynfo")
     public Result<Category> info(@PathVariable("catId") Long catId){
 		Category category = categoryService.getById(catId);
 
@@ -76,12 +79,13 @@ public class CategoryController {
 
     /**
      * 删除
+     * @RequestBody 请求必须为post
      */
     @RequestMapping("/delete")
-    //@RequiresPermissions("product:category:delete")
-    public Result<Boolean> delete(@RequestBody Long[] catIds){
+    public Result<Integer> delete(@RequestBody Long[] catIds){
 
-        return Result.success(categoryService.removeByIds(Arrays.asList(catIds)));
+        //return Result.success(categoryService.removeByIds(Arrays.asList(catIds)));
+        return Result.success(categoryService.removeMenuByIds(catIds));
     }
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.poplar.common.utils.PageUtils;
 import com.poplar.product.domain.Category;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,5 +17,9 @@ import java.util.Map;
 public interface CategoryService extends IService<Category> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    List<Category> getCategoryList();
+
+    Integer removeMenuByIds(Long[] catIds);
 }
 

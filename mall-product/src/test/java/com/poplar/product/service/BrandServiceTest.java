@@ -36,4 +36,5 @@ class BrandServiceTest {
         brand.setDescript("华为中国");
         brandService.updateById(brand);
     }
+
 }

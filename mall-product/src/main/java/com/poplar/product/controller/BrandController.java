@@ -4,10 +4,13 @@ import com.poplar.common.utils.PageUtils;
 import com.poplar.common.utils.Result;
 import com.poplar.product.domain.Brand;
 import com.poplar.product.service.BrandService;
+import com.poplar.valid.AddGroup;
+import com.poplar.valid.UpdateGroup;
+import com.poplar.valid.UpdateStatusGroup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -55,7 +58,7 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public Result<Object> save(@RequestBody @Valid Brand brand) {
+    public Result<Object> save(@RequestBody @Validated(AddGroup.class) Brand brand) {
         return Result.success(brandService.save(brand));
     }
 
@@ -64,11 +67,19 @@ public class BrandController {
      */
     @RequestMapping("/update")
     // @RequiresPermissions("product:brand:update")
-    public Result<Boolean> update(@RequestBody Brand brand) {
+    public Result<Boolean> update(@RequestBody @Validated(UpdateGroup.class) Brand brand) {
 
         return Result.success(brandService.updateById(brand));
     }
 
+    /**
+     * 修改状态
+     */
+    @RequestMapping("/update/status")
+    public Result<Boolean> updateStatus(@RequestBody @Validated(UpdateStatusGroup.class) Brand brand) {
+
+        return Result.success(brandService.updateById(brand));
+    }
     /**
      * 删除
      */

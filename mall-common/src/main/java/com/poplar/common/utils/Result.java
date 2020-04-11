@@ -33,6 +33,11 @@ public class Result<T> {
     public static <T> Result<T> fail(String message) {
         return new Result<T>(-1, message, null);
     }
+
+    public static <T> Result<T> fail(Integer code, String message) {
+        return new Result<T>(code, message, null);
+    }
+
     public static <T> Result<T> fail() {
         return new Result<T>(-1, "fail", null);
     }

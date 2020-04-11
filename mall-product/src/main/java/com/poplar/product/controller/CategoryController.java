@@ -71,7 +71,6 @@ public class CategoryController {
      * 修改
      */
     @RequestMapping("/update")
-   // @RequiresPermissions("product:category:update")
     public Result<Boolean> update(@RequestBody Category category){
 
         return Result.success(categoryService.updateById(category));

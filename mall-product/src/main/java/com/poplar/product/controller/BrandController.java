@@ -1,21 +1,17 @@
 package com.poplar.product.controller;
 
+import com.poplar.common.utils.PageUtils;
+import com.poplar.common.utils.Result;
+import com.poplar.product.domain.Brand;
+import com.poplar.product.service.BrandService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.poplar.product.domain.Brand;
-import com.poplar.product.service.BrandService;
-import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.Result;
-
 
 
 /**
@@ -36,7 +32,7 @@ public class BrandController {
      */
     @RequestMapping("/list")
     //@RequiresPermissions("product:brand:list")
-    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params) {
         PageUtils page = brandService.queryPage(params);
 
         return Result.success(page);
@@ -48,8 +44,8 @@ public class BrandController {
      */
     @RequestMapping("/info/{brandId}")
     //@RequiresPermissions("product:brand:info")
-    public Result<Brand> info(@PathVariable("brandId") Long brandId){
-		Brand brand = brandService.getById(brandId);
+    public Result<Brand> info(@PathVariable("brandId") Long brandId) {
+        Brand brand = brandService.getById(brandId);
 
         return Result.success(brand);
     }
@@ -59,8 +55,7 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public Result<Boolean> save(@RequestBody Brand brand){
-
+    public Result<Object> save(@RequestBody @Valid Brand brand) {
         return Result.success(brandService.save(brand));
     }
 
@@ -68,8 +63,8 @@ public class BrandController {
      * 修改
      */
     @RequestMapping("/update")
-   // @RequiresPermissions("product:brand:update")
-    public Result<Boolean> update(@RequestBody Brand brand){
+    // @RequiresPermissions("product:brand:update")
+    public Result<Boolean> update(@RequestBody Brand brand) {
 
         return Result.success(brandService.updateById(brand));
     }
@@ -79,7 +74,7 @@ public class BrandController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:brand:delete")
-    public Result<Boolean> delete(@RequestBody Long[] brandIds){
+    public Result<Boolean> delete(@RequestBody Long[] brandIds) {
 
         return Result.success(brandService.removeByIds(Arrays.asList(brandIds)));
     }

@@ -1,20 +1,16 @@
 package com.poplar.product.controller;
 
+import com.poplar.common.utils.PageUtils;
+import com.poplar.common.utils.Result;
+import com.poplar.product.domain.Attr;
+import com.poplar.product.service.AttrService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.poplar.product.domain.Attr;
-import com.poplar.product.service.AttrService;
-import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.Result;
 
 
 
@@ -41,7 +37,13 @@ public class AttrController {
 
         return Result.success(page);
     }
+    @RequestMapping("/base/list/{catId}")
+    //@RequiresPermissions("product:attr:list")
+    public Result<PageUtils> baseList(@RequestParam Map<String, Object> params,@PathVariable("catId")Long catId){
+        PageUtils page = attrService.queryDetail(params,catId);
 
+        return Result.success(page);
+    }
 
     /**
      * 信息

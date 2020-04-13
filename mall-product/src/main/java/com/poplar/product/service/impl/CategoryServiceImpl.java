@@ -7,9 +7,12 @@ import com.poplar.common.utils.PageUtils;
 import com.poplar.common.utils.Query;
 import com.poplar.product.dao.CategoryDao;
 import com.poplar.product.domain.Category;
+import com.poplar.product.service.CategoryBrandRelationService;
 import com.poplar.product.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +26,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
 
     @Autowired
     private CategoryDao categoryDao;
+
+    @Autowired
+    private CategoryBrandRelationService categoryBrandRelationService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -51,6 +57,16 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, Category> impl
     public Integer removeMenuByIds(Long[] catIds) {
         //TODO 需要一些校验
         return categoryDao.deleteBatchIds(Arrays.asList(catIds));
+    }
+
+    @Transactional
+    @Override
+    public Boolean updateCategoryDetail(Category category) {
+        int res = categoryDao.updateById(category);
+        if (!StringUtils.isEmpty(category.getName())){
+            categoryBrandRelationService.updateCategoryDetail(category);
+        }
+        return res > 0;
     }
 
     private List<Category> getChildrens(Category root, List<Category> all) {

@@ -21,5 +21,7 @@ public interface CategoryService extends IService<Category> {
     List<Category> getCategoryList();
 
     Integer removeMenuByIds(Long[] catIds);
+
+    Boolean updateCategoryDetail(Category category);
 }
 

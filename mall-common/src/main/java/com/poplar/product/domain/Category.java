@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -61,6 +62,7 @@ public class Category implements Serializable {
 	private Integer productCount;
 
 	/*表示数据库中不存在该字段*/
+	@JsonInclude(value = JsonInclude.Include.NON_EMPTY)
 	@TableField(exist = false)
 	private List<Category> children;
 

@@ -2,6 +2,8 @@ package com.poplar.product.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.poplar.common.utils.PageUtils;
+import com.poplar.product.domain.Brand;
+import com.poplar.product.domain.Category;
 import com.poplar.product.domain.CategoryBrandRelation;
 
 import java.util.Map;
@@ -16,5 +18,9 @@ import java.util.Map;
 public interface CategoryBrandRelationService extends IService<CategoryBrandRelation> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    void updateBrandDetail(Brand brand);
+
+    void updateCategoryDetail(Category category);
 }
 

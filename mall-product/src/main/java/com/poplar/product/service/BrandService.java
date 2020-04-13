@@ -16,5 +16,7 @@ import java.util.Map;
 public interface BrandService extends IService<Brand> {
 
     PageUtils queryPage(Map<String, Object> params);
+
+    Boolean updateBrandDetail(Brand brand);
 }
 

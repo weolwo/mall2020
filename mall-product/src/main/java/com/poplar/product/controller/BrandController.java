@@ -69,7 +69,7 @@ public class BrandController {
     // @RequiresPermissions("product:brand:update")
     public Result<Boolean> update(@RequestBody @Validated(UpdateGroup.class) Brand brand) {
 
-        return Result.success(brandService.updateById(brand));
+        return Result.success(brandService.updateBrandDetail(brand));
     }
 
     /**

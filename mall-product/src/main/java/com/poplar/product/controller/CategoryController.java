@@ -40,7 +40,7 @@ public class CategoryController {
     /**
      * 获取分类列表
      */
-    @RequestMapping("/getCategory/tree")
+    @RequestMapping("/list/tree")
     public Result< List<Category>> getCategoryList(){
         List<Category> categoryList = categoryService.getCategoryList();
         return Result.success(categoryList);
@@ -73,7 +73,7 @@ public class CategoryController {
     @RequestMapping("/update")
     public Result<Boolean> update(@RequestBody Category category){
 
-        return Result.success(categoryService.updateById(category));
+        return Result.success(categoryService.updateCategoryDetail(category));
     }
 
     /**

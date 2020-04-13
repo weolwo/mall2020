@@ -1,21 +1,16 @@
 package com.poplar.product.controller;
 
+import com.poplar.common.utils.PageUtils;
+import com.poplar.common.utils.Result;
+import com.poplar.product.domain.AttrGroup;
+import com.poplar.product.service.AttrGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.poplar.product.domain.AttrGroup;
-import com.poplar.product.service.AttrGroupService;
-import com.poplar.common.utils.PageUtils;
-import com.poplar.common.utils.Result;
-
 
 
 /**
@@ -34,11 +29,9 @@ public class AttrGroupController {
     /**
      * 列表
      */
-    @RequestMapping("/list")
-    //@RequiresPermissions("product:attrgroup:list")
-    public Result<PageUtils> list(@RequestParam Map<String, Object> params){
-        PageUtils page = attrGroupService.queryPage(params);
-
+    @RequestMapping("/list/{catelogId}")
+    public Result<PageUtils> list(@RequestParam Map<String, Object> params, @PathVariable("catelogId") Long catelogId) {
+        PageUtils page = attrGroupService.queryPage(params, catelogId);
         return Result.success(page);
     }
 
@@ -48,9 +41,12 @@ public class AttrGroupController {
      */
     @RequestMapping("/info/{attrGroupId}")
     //@RequiresPermissions("product:attrgroup:info")
-    public Result<AttrGroup> info(@PathVariable("attrGroupId") Long attrGroupId){
-		AttrGroup attrGroup = attrGroupService.getById(attrGroupId);
-
+    public Result<AttrGroup> info(@PathVariable("attrGroupId") Long attrGroupId) {
+        AttrGroup attrGroup = attrGroupService.getById(attrGroupId);
+        Long catelogId = attrGroup.getCatelogId();
+        //根据catelogId查找所有的层级数组[1,23,33]
+        Long[] path = attrGroupService.queryCatelogPath(catelogId);
+        attrGroup.setCatelogPath(path);
         return Result.success(attrGroup);
     }
 
@@ -59,7 +55,7 @@ public class AttrGroupController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:attrgroup:save")
-    public Result<Boolean> save(@RequestBody AttrGroup attrGroup){
+    public Result<Boolean> save(@RequestBody AttrGroup attrGroup) {
 
         return Result.success(attrGroupService.save(attrGroup));
     }
@@ -68,8 +64,8 @@ public class AttrGroupController {
      * 修改
      */
     @RequestMapping("/update")
-   // @RequiresPermissions("product:attrgroup:update")
-    public Result<Boolean> update(@RequestBody AttrGroup attrGroup){
+    // @RequiresPermissions("product:attrgroup:update")
+    public Result<Boolean> update(@RequestBody AttrGroup attrGroup) {
 
         return Result.success(attrGroupService.updateById(attrGroup));
     }
@@ -79,7 +75,7 @@ public class AttrGroupController {
      */
     @RequestMapping("/delete")
     //@RequiresPermissions("product:attrgroup:delete")
-    public Result<Boolean> delete(@RequestBody Long[] attrGroupIds){
+    public Result<Boolean> delete(@RequestBody Long[] attrGroupIds) {
 
         return Result.success(attrGroupService.removeByIds(Arrays.asList(attrGroupIds)));
     }
